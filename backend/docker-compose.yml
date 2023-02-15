@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  node:
+    image: node:16.14
+    container_name: URL_API
+    user: node
+    tty: true
+    stdin_open: true
+    command: bash
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - mongodb
+    ports:
+      - 3003:3003
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/URL_API_node
+
+  mongodb:
+    image: mongo:5.0.7
+    container_name: URL_API_db
+    volumes:
+      - ./:/app
+    restart: always
+    ports:
+      - 27017:27017
+
+networks:
+  default:
+    name: url_net
