@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
+    "start": "ts-node-dev src/server.ts",
     "dev": "ts-node-dev src/server.ts",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "mocha -r ts-node/register tests/unit/**/*.test.ts --exit",
