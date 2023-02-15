@@ -3,6 +3,7 @@ import app from './app';
 import connectToDatabase from './models/connection';
 
 const PORT = process.env.PORT || 3003;
+
 connectToDatabase()
   .then(() => {
     app.listen(PORT, () => console.log(`Running server on port: ${PORT}`));

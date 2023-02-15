@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
-const MONGO_DB_URL = 'mongodb://localhost:27017/URL_API_db';
+const MONGO_DB = 'mongodb://mongo:7d61gZ9OsL5yzhJ9BJvn@containers-us-west-40.railway.app:5859';
 
 const connectToDatabase = (
   mongoDatabaseURI = process.env.MONGO_URI
-    || MONGO_DB_URL,
+    || MONGO_DB,
 ) => mongoose.connect(mongoDatabaseURI);
 
 export default connectToDatabase;
