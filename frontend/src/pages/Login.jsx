@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Header from '../components/Header';
-import { requestLogin, setToken } from '../services/requests';
+import api, { requestLogin, setToken } from '../services/requests';
 import '../styles/pages/login.css';
 
 const Login = () => {
@@ -10,28 +10,30 @@ const Login = () => {
   const [isLogged, setIsLogged] = useState(false);
   const [failedTryLogin, setFailedTryLogin] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
+  const [userUrls, setUserUrls] = useState();
 
   const login = async (event) => {
     event.preventDefault();
-
     try {
       let { token } = await requestLogin('/login', { email, password });
       if (!token) {
-       await requestLogin('/create', { email, password });
-       token = await requestLogin('/login', { email, password });
+        await requestLogin('/create', { email, password });
+        token = await requestLogin('/login', { email, password });
       }
       setToken(token);
       localStorage.setItem('token',  token);
+      const { data } = await api.get('/url');
+      setUserUrls(data);
       setIsLogged(true);
     } catch (error) {
       setFailedTryLogin(true);
       setIsLogged(false);
     }
   };
-
+  
   const create = async (event) => {
     event.preventDefault();
-
+    
     try {
       const { token } = await requestLogin('/user', { email, password }); 
       setToken(token);
@@ -41,13 +43,13 @@ const Login = () => {
       setIsLogged(false);
     }
   };
-
+  
   useEffect(() => {
     setFailedTryLogin(false);
   }, [email, password]);
-
-  if (isLogged) return <Navigate to="/url" />;
-
+  
+  if (isLogged) return <Navigate to="/url" state={{uurls: userUrls}}/>;
+  
   return (
     <>
       <Header

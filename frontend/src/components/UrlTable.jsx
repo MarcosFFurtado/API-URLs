@@ -1,14 +1,10 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-import Loading from './Loading';
 
 function UrlsTable ({urls, delUrl, editUrl}) {
-  
-  if (!urls.length) {
-    return (<Loading />);
-  }
 
   return (
+    <div>
+      {(!urls)? <div>Loading ....</div> :
     <table className="games-table">
       <thead>
         <tr>
@@ -18,10 +14,7 @@ function UrlsTable ({urls, delUrl, editUrl}) {
         </tr>
       </thead>
       <tbody>
-        {
-          urls
-            .map((
-              url
+        {urls?.map((url
             ) => (
               <tr key={ url._id }>
                 <td
@@ -52,11 +45,9 @@ function UrlsTable ({urls, delUrl, editUrl}) {
         }
       </tbody>
     </table>
+    } 
+  </div>
   );
 };
-
-// UrlsTable.propTypes = {
-//   // currentFilter: PropTypes.string.isRequired,
-// };
 
 export default UrlsTable;

@@ -4,14 +4,16 @@ import Header from '../components/Header';
 import UrlTable from '../components/UrlTable'
 import api from '../services/requests';
 import '../styles/pages/login.css';
+import { useLocation } from 'react-router-dom';
 
 const Login = () => {
+  const { state } = useLocation();
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
   const [isLogged] = useState(false);
   const [failedUrlEntry, setFailedUrlEntry] = useState(false);
   const [urlEdit, setUrlEdit] = useState(false);
-  const [urlEntered, setUrlEntered] = useState(false);
+  const [urlArray, setUrlArray] = useState(state.uurls);
   const [id, setId] = useState(false);
 
   const validadeUrl = new RegExp(`(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?`);
@@ -26,7 +28,7 @@ const Login = () => {
       };
       await api.post('/url', body);
       const { data } = await api.get('/url');
-      setUrlEntered(data);
+      setUrlArray(data);
       setDescription('');
       setUrl('');
       setFailedUrlEntry(false)
@@ -42,7 +44,7 @@ const Login = () => {
       };
       await api.delete('/url', { data: body });
       const { data } = await api.get('/url').then();
-      setUrlEntered(data);
+      setUrlArray(data);
     } catch (error) {
       console.log(error.message);
     }
@@ -66,7 +68,7 @@ const Login = () => {
       };
      await api.put('/url', body);
       const { data } = await api.get('/url').then();
-      setUrlEntered(data);
+      setUrlArray(data);
       setDescription('');
       setUrl('');
       setFailedUrlEntry(false);
@@ -103,31 +105,25 @@ const Login = () => {
               placeholder="endreceço - URL"
             />
           </label>
-          {
-            (failedUrlEntry)
-              ? (
+          {(failedUrlEntry)? (
                 <p data-testid="login__input_invalid_login_alert">
                   {
                     `Link já esta amarzenado ou formato de link Inválido!`
                   }
                 </p>
-              )
-              : null
+              ): null
           }
           {
-            (urlEdit)
-              ? (
+            (urlEdit)? (
                 <p data-testid="user__created_alert">
                   {
                     `Edite a URL acima e clique Editar para salvar as Alterações`
                   }
                 </p>
-              )
-              : null
+              ): null
           }
           {
-            (!urlEdit)
-              ? (
+            (!urlEdit) ? (
           <button
             data-testid="login__login_btn"
             type="submit"
@@ -139,8 +135,7 @@ const Login = () => {
            : null
           }
           {
-            (urlEdit)
-              ? (
+            (urlEdit) ? (
           <button
             data-testid="login__login_btn"
             type="btn"
@@ -149,12 +144,11 @@ const Login = () => {
           >
             Editar
           </button>
-          )
-          : null
+          ): null
          }
         </form>
         <div>
-        <UrlTable urls={urlEntered} delUrl={delUrl} editUrl={editUrl}/>
+        <UrlTable urls={urlArray} delUrl={delUrl} editUrl={editUrl}/>
         </div>
       </section>
     </>
