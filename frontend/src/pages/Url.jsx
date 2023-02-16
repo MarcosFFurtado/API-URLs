@@ -75,9 +75,7 @@ const Login = () => {
     } catch (error) {
     }
   };
-
-  if (isLogged) return <Navigate to="/urls" />;
-
+  
   return (
     <>
       <Header
