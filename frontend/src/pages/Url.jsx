@@ -100,7 +100,7 @@ const Login = () => {
               value={ url }
               onChange={ ({ target: { value } }) => setUrl(value) }
               data-testid="login__url_input"
-              placeholder="endreceço - URL"
+              placeholder="endereço - URL"
             />
           </label>
           {(failedUrlEntry)? (
