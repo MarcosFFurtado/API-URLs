@@ -17,9 +17,9 @@ const Login = () => {
   const [logged, setLogin] = useState(false);
   
     useEffect(() => {
-      const token = localStorage.getItem('token');
-      setLogin(!!token);
-    }, [logged, setLogin]);
+      const token = localStorage.getItem('token') || false;
+      if (token) setLogin(true);
+    }, []);
   
   const validadeUrl = new RegExp(`(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?`);
 
