@@ -82,7 +82,7 @@ class urlController {
   public async delete() {
     try {
       const id = await getIdFromToken(this.token);
-      console.log(this.urlAdress);  
+      console.log(this.urlAdress);
       const urlFound = await this.service.delete(this.urlAdress, id);
       if(urlFound === null) return this.res.status(400).json({ message: 'Not in database' });
       return this.res.status(201).json({'DELETED URL': urlFound});

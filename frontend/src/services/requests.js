@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: `https://guided-silver-production.up.railway.app`,
+  // baseURL: `http://localhost:${process.env.REACT_APP_API_PORT || '3003'}`,
 });
 
 export const setToken = (token) => {

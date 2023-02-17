@@ -28,8 +28,9 @@ function UrlsTable ({urls, delUrl, editUrl}) {
                   className="games-table-tbody-home-team"
                   data-testid={ `url` }
                   style = {{ width:'480px'}}
+                  href='true'
                 >
-                  { url.url }
+                  <a href={ url.url }>{ url.url }</a>
                 </td>
                 <td className="games-table-tbody-empty-space">{ ' ' }</td>
                 <td className="games-table-tbody-status">
