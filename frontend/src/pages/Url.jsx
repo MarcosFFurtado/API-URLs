@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react-router-dom';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import UrlTable from '../components/UrlTable'
-import api from { setToken }'../services/requests';
+import api, { setToken } from '../services/requests';
 import '../styles/pages/login.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { state } = useLocation();
@@ -12,28 +11,26 @@ const Login = () => {
   const [url, setUrl] = useState('');
   const [failedUrlEntry, setFailedUrlEntry] = useState(false);
   const [urlEdit, setUrlEdit] = useState(false);
-  const [urlArray, setUrlArray] = useState(state.uurls);
   const [id, setId] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    (async () => {
-      const token = localStorage.getItem('token') || '';
-
-      if (!token) return navigate('/');
-
-      setToken(token);
-
-      requestData('/login/validate')
-        .then(() => setIsAuthenticated(true))
-        .catch(() => navigate('/'));
-    })();
-  }, [navigate]);
+  const [logged, setLogin] = useState(false);
   
   const validadeUrl = new RegExp(`(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?`);
 
+  const localStorageUrls = localStorage.getItem(('lastUrls'));
+  if(localStorageUrls === null) localStorage.setItem('lastUrls', JSON.stringify(state.uurls));
+  const URLs = localStorage.getItem(('lastUrls'));
+  const [urlArray, setUrlArray] = useState((JSON.parse(URLs)));
+
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    (async () => {
+      const token = localStorage.getItem('token') || '';
+      if (!token) return navigate('/');
+      setToken(token);
+    })();
+  }, []);
+  
   const addUrl = async (event) => {
     event.preventDefault();
     try {
@@ -43,8 +40,9 @@ const Login = () => {
         url,
       };
       await api.post('/url', body);
-      const { data } = await api.get('/url');
+      const { data } = await api.get('/url').then();
       setUrlArray(data);
+      localStorage.setItem('lastUrls',  JSON.stringify(data));
       setDescription('');
       setUrl('');
       setFailedUrlEntry(false)
@@ -52,7 +50,7 @@ const Login = () => {
       setFailedUrlEntry(true);
     }
   };
-
+  
   const delUrl = async (url) => {
     try {
       const body = {
@@ -61,18 +59,19 @@ const Login = () => {
       await api.delete('/url', { data: body });
       const { data } = await api.get('/url').then();
       setUrlArray(data);
+      localStorage.setItem('lastUrls',  JSON.stringify(data));
     } catch (error) {
       console.log(error.message);
     }
   };
-
+  
   async function editUrl({_id, url, description}) {
     setDescription(description);
     setUrl(url);
     setUrlEdit(true);
     setId(_id);
   };
-
+  
   async function saveEdit() {
     if(!validadeUrl.test(url)) return setFailedUrlEntry(true);
     setUrlEdit(false);
@@ -82,8 +81,9 @@ const Login = () => {
         description,
         url,
       };
-     await api.put('/url', body);
-      const { data } = await api.get('/url').then();
+      await api.put('/url', body);
+      const { data } = await api.get('/url');
+      localStorage.setItem('lastUrls',  JSON.stringify(data));
       setUrlArray(data);
       setDescription('');
       setUrl('');
@@ -96,9 +96,9 @@ const Login = () => {
     <>
       <Header
         page="URL"
-        logged={ isAuthenticated }
-        setLogin={ setIsAuthenticated }
-      />
+        logged={ logged }
+        setLogin={ setLogin }
+        />
       <section className="user-login-area">
         <form>
           <h1>Cadastre a Página</h1>
