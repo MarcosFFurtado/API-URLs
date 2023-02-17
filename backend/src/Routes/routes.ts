@@ -35,4 +35,9 @@ routes.post(
   (req, res, next) => new userController(req, res, next).userLogin(),
 );
 
+routes.get(
+  '/user/',
+  (req, res, next) => new userController(req, res, next).getAllUsers(),
+);
+
 export default routes;

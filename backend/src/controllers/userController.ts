@@ -44,6 +44,17 @@ class userController {
       this.next(error);
     }
   }
+
+  public async getAllUsers() {
+    try {
+      const result = await this.service.findAll();
+      if (!result) return this.res.status(400).json({ message: 'Invalid fields' });
+      return this.res.status(200).json({ token: result });
+    } catch (error) {
+      this.next(error);
+    }
+  }
+    
 }
 
 export default userController;

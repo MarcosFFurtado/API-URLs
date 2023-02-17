@@ -47,6 +47,12 @@ class userService {
     const newUrl = await urlMd.findOneByEmail(email);
     return newUrl;
   }
+
+  public async findAll() {
+    const urlMd = new userModel();
+    const newUrl = await urlMd.findAll();
+    return newUrl;
+  }
 }
 
 export default userService;
