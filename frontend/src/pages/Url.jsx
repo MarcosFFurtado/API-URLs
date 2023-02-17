@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import UrlTable from '../components/UrlTable'
-import api from '../services/requests';
+import api from { setToken }'../services/requests';
 import '../styles/pages/login.css';
-import { useLocation } from 'react-router-dom';
 
 const Login = () => {
   const { state } = useLocation();
@@ -14,12 +14,23 @@ const Login = () => {
   const [urlEdit, setUrlEdit] = useState(false);
   const [urlArray, setUrlArray] = useState(state.uurls);
   const [id, setId] = useState(false);
-  const [logged, setLogin] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-    useEffect(() => {
-      const token = localStorage.getItem('token') || false;
-      if (token) setLogin(true);
-    }, []);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      const token = localStorage.getItem('token') || '';
+
+      if (!token) return navigate('/');
+
+      setToken(token);
+
+      requestData('/login/validate')
+        .then(() => setIsAuthenticated(true))
+        .catch(() => navigate('/'));
+    })();
+  }, [navigate]);
   
   const validadeUrl = new RegExp(`(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?`);
 
@@ -85,8 +96,8 @@ const Login = () => {
     <>
       <Header
         page="URL"
-        logged={ logged }
-        setLogin={ setLogin }
+        logged={ isAuthenticated }
+        setLogin={ setIsAuthenticated }
       />
       <section className="user-login-area">
         <form>
