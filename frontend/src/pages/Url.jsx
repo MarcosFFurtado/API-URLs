@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react-router-dom';
 import Header from '../components/Header';
 import UrlTable from '../components/UrlTable'
 import api from '../services/requests';
@@ -10,12 +10,17 @@ const Login = () => {
   const { state } = useLocation();
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
-  const [isLogged] = useState(false);
   const [failedUrlEntry, setFailedUrlEntry] = useState(false);
   const [urlEdit, setUrlEdit] = useState(false);
   const [urlArray, setUrlArray] = useState(state.uurls);
   const [id, setId] = useState(false);
-
+  const [logged, setLogin] = useState(false);
+  
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      setLogin(!!token);
+    }, [logged, setLogin]);
+  
   const validadeUrl = new RegExp(`(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?`);
 
   const addUrl = async (event) => {
@@ -80,6 +85,8 @@ const Login = () => {
     <>
       <Header
         page="URL"
+        logged={ logged }
+        setLogin={ setLogin }
       />
       <section className="user-login-area">
         <form>
