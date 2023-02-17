@@ -11,9 +11,13 @@ const Login = () => {
   const [failedTryLogin, setFailedTryLogin] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
   const [userUrls, setUserUrls] = useState();
+  const [invalidEmail, setInalidEmail] = useState(false);
+
+  const verifyEmail = /\S+@\S+\.\S+/.test(email);
 
   const login = async (event) => {
     event.preventDefault();
+    if(!verifyEmail) return setInalidEmail(true);
     try {
       let { token } = await requestLogin('/login', { email, password });
       if (!token) {
@@ -25,6 +29,7 @@ const Login = () => {
       const { data } = await api.get('/url');
       setUserUrls(data);
       setIsLogged(true);
+      localStorage.removeItem("lastUrls");
     } catch (error) {
       setFailedTryLogin(true);
       setIsLogged(false);
@@ -65,7 +70,7 @@ const Login = () => {
               value={ email }
               onChange={ ({ target: { value } }) => setEmail(value) }
               data-testid="login__login_input"
-              placeholder="Login"
+              placeholder="email"
             />
           </label>
           <label htmlFor="password-input">
@@ -77,29 +82,22 @@ const Login = () => {
               placeholder="Senha"
             />
           </label>
-          {
-            (failedTryLogin)
-              ? (
+          {(failedTryLogin)? (
                 <p data-testid="login__input_invalid_login_alert">
                   {
                     `O endereço de e-mail ou a senha não estão corretos.
                     Por favor, tente novamente.`
-                  }
-                </p>
-              )
-              : null
-          }
-          {
-            (userCreated)
-              ? (
+                  }</p>): null}
+          {(invalidEmail)? (
+                <p data-testid="user__created_alert">
+                  {
+                    `Email com formato incorreto !`
+                  }</p>): null}
+          {(userCreated)? (
                 <p data-testid="user__created_alert">
                   {
                     `Usuário criado com sucesso, Clique em Login para entrar!`
-                  }
-                </p>
-              )
-              : null
-          }
+                  }</p>): null}
           <button
             data-testid="login__login_btn"
             type="submit"

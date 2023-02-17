@@ -21,6 +21,11 @@ const Login = () => {
   const URLs = localStorage.getItem(('lastUrls'));
   const [urlArray, setUrlArray] = useState((JSON.parse(URLs)));
 
+  const verifyTokenPresence = () => {
+    const token = localStorage.getItem('token') || '';
+      if (!token) return navigate('/');
+  }
+
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -32,6 +37,7 @@ const Login = () => {
   }, []);
   
   const addUrl = async (event) => {
+    verifyTokenPresence();
     event.preventDefault();
     try {
       if(!validadeUrl.test(url)) return setFailedUrlEntry(true);
@@ -52,6 +58,7 @@ const Login = () => {
   };
   
   const delUrl = async (url) => {
+    verifyTokenPresence();
     try {
       const body = {
         url
@@ -73,6 +80,7 @@ const Login = () => {
   };
   
   async function saveEdit() {
+    verifyTokenPresence();
     if(!validadeUrl.test(url)) return setFailedUrlEntry(true);
     setUrlEdit(false);
     try {
