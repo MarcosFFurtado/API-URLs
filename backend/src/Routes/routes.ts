@@ -40,9 +40,9 @@ routes.get(
   (req, res, next) => new userController(req, res, next).getAllUsers(),
 );
 
-routes.delete(
-  '/user/:id',
-  (req, res, next) => new userController(req, res, next).deleteUser(),
-);
+// routes.delete(
+//   '/user/:id',
+//   (req, res, next) => new userController(req, res, next).deleteUser(),
+// );
 
 export default routes;
