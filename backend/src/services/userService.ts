@@ -43,14 +43,20 @@ class userService {
   }
 
   public async findOneByEmail(email: string): Promise<IUser | null> {
-    const urlMd = new userModel();
-    const newUrl = await urlMd.findOneByEmail(email);
+    const userMd = new userModel();
+    const newUrl = await userMd.findOneByEmail(email);
     return newUrl;
   }
 
   public async findAll() {
-    const urlMd = new userModel();
-    const newUrl = await urlMd.findAll();
+    const userMd = new userModel();
+    const newUrl = await userMd.findAll();
+    return newUrl;
+  }
+
+  public async deleteUser(id: string) {
+    const userMd = new userModel();
+    const newUrl = await userMd.deleteUser(id);
     return newUrl;
   }
 }

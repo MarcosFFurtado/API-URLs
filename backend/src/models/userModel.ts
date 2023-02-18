@@ -25,6 +25,10 @@ class userModel {
     return this.model.findOne({email: {$eq: email}});
   }
 
+  public async deleteUser(id: string): Promise<IUser | null> {
+    return this.model.findOneAndDelete({_id: {$eq: id}});
+  }
+
   public async findOne(email: string, password: string): Promise<IUser | null> {
     return this.model.findOne({$and: [{email: {$eq: email}}, {password: {$eq: password}}]});
   }
