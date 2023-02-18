@@ -33,8 +33,6 @@ const Login = () => {
       const token = localStorage.getItem('token') || '';
       if (!token) return navigate('/');
       setToken(token);
-      const { data } = await api.get('/url');
-      localStorage.setItem('lastUrls',  JSON.stringify(data));
     })();
   }, [navigate]);
   
