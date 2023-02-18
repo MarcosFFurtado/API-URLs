@@ -57,7 +57,7 @@ class userController {
 
   public async deleteUser() {
     try {
-      const { id } = this.req.body;
+      const { id } = this.req.params;
       const result = await this.service.deleteUser(id);
       if (!result) return this.res.status(400).json({ message: 'Invalid fields' });
       return this.res.status(200).json({ token: result });
