@@ -49,7 +49,7 @@ class userController {
     try {
       const result = await this.service.findAll();
       if (!result) return this.res.status(400).json({ message: 'Invalid fields' });
-      return this.res.status(200).json({ token: result });
+      return this.res.status(200).json({ Users: result });
     } catch (error) {
       this.next(error);
     }
@@ -58,9 +58,11 @@ class userController {
   public async deleteUser() {
     try {
       const { id } = this.req.params;
+      console.log(id);
+      
       const result = await this.service.deleteUser(id);
       if (!result) return this.res.status(400).json({ message: 'Invalid fields' });
-      return this.res.status(200).json({ token: result });
+      return this.res.status(200).json({ DELETED: result });
     } catch (error) {
       this.next(error);
     }
