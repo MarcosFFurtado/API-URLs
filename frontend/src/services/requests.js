@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `api-url-backend-production.up.railway.app`,
+  baseURL: `https://api-url-backend-production.up.railway.app`,
 });
 
 export const setToken = (token) => {
