@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `https://guided-silver-production.up.railway.app`,
+  baseURL: `api-url-backend-production.up.railway.app`,
 });
 
 export const setToken = (token) => {
