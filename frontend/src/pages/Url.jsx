@@ -5,7 +5,7 @@ import api, { setToken } from '../services/requests';
 import '../styles/pages/login.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const URLs = () => {
   const { state } = useLocation();
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
@@ -179,4 +179,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default URLs;
